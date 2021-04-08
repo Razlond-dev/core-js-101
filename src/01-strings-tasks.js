@@ -5,7 +5,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -21,7 +20,6 @@
 function concatenateStrings(value1, value2) {
   return value1 + value2;
 }
-
 
 /**
  * Returns the length of given string.
@@ -65,10 +63,10 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, John Doe!' => 'John Doe'
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const arr = value.split(', ');
+  return arr[1].slice(0, arr[1].length - 1);
 }
-
 
 /**
  * Returns a first char of the given string.
@@ -80,8 +78,8 @@ function extractNameFromTemplate(/* value */) {
  *   'John Doe'  => 'J'
  *   'cat'       => 'c'
  */
-function getFirstChar(/* value */) {
-  throw new Error('Not implemented');
+function getFirstChar(value) {
+  return value.charAt(0);
 }
 
 /**
@@ -95,8 +93,8 @@ function getFirstChar(/* value */) {
  *   'cat'              => 'cat'
  *   '\tHello, World! ' => 'Hello, World!'
  */
-function removeLeadingAndTrailingWhitespaces(/* value */) {
-  throw new Error('Not implemented');
+function removeLeadingAndTrailingWhitespaces(value) {
+  return value.trim();
 }
 
 /**
@@ -110,8 +108,12 @@ function removeLeadingAndTrailingWhitespaces(/* value */) {
  *   'A', 5  => 'AAAAA'
  *   'cat', 3 => 'catcatcat'
  */
-function repeatString(/* value, count */) {
-  throw new Error('Not implemented');
+function repeatString(value, count) {
+  let word = value;
+  for (let i = 1; i < count; i += 1) {
+    word += value;
+  }
+  return word;
 }
 
 /**
@@ -126,8 +128,9 @@ function repeatString(/* value, count */) {
  *   'I like legends', 'end' => 'I like legs',
  *   'ABABAB','BA' => 'ABAB'
  */
-function removeFirstOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeFirstOccurrences(str, value) {
+  const newWord = str.replace(value, '');
+  return newWord;
 }
 
 /**
@@ -141,10 +144,12 @@ function removeFirstOccurrences(/* str, value */) {
  *   '<span>' => 'span'
  *   '<a>' => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  const arr = str.split('');
+  arr.pop();
+  arr.shift();
+  return arr.join('');
 }
-
 
 /**
  * Converts all characters of the specified string into the upper case
@@ -156,8 +161,8 @@ function unbracketTag(/* str */) {
  *   'Thunderstruck' => 'THUNDERSTRUCK'
  *  'abcdefghijklmnopqrstuvwxyz' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
  */
-function convertToUpperCase(/* str */) {
-  throw new Error('Not implemented');
+function convertToUpperCase(str) {
+  return str.toUpperCase();
 }
 
 /**
@@ -175,8 +180,8 @@ function convertToUpperCase(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -202,10 +207,32 @@ function extractEmails(/* str */) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
-}
+function getRectangleString(width, height) {
+  let rect = '';
+  for (let i = 0; i < height; i += 1) {
+    for (let j = 0; j < width; j += 1) {
+      if (i === 0 && j === 0) {
+        rect += '┌';
+      } else if (i === 0 && j === width - 1) {
+        rect += '┐\n';
+      } else if (i === height - 1 && j === 0) {
+        rect += '└';
+      } else if (i === height - 1 && j === width - 1) {
+        rect += '┘\n';
+      } else if (j === 0) {
+        rect += '│';
+      } else if (j === width - 1) {
+        rect += '│\n';
+      } else if (i === 0 || i === height - 1) {
+        rect += '─';
+      } else {
+        rect += ' ';
+      }
+    }
+  }
 
+  return rect;
+}
 
 /**
  * Encode specified string with ROT13 cipher
@@ -223,8 +250,24 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const arr = alphabet.split('');
+  const newStr = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    const index = arr.indexOf(str[i]);
+    if (index === -1) {
+      newStr.push(str[i]);
+    } else if (index + 13 >= alphabet.length) {
+      newStr.push(arr[index - 13]);
+    } else if (index + 13 >= 26 && index < 26) {
+      newStr.push(arr[index - 13]);
+    } else {
+      newStr.push(arr[index + 13]);
+    }
+  }
+  return newStr.join('');
 }
 
 /**
@@ -240,10 +283,12 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  if (value == null) {
+    return false;
+  }
+  return Object.getPrototypeOf(value) === Object.getPrototypeOf('string');
 }
-
 
 /**
  * Returns playid card id.
@@ -269,10 +314,63 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const deck = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
+  return deck.indexOf(value);
 }
-
 
 module.exports = {
   concatenateStrings,
